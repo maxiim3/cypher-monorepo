@@ -1,0 +1,176 @@
+"use client"
+
+import {Section} from "@/app/section"
+import {lazy, Suspense, useEffect, useState} from "react"
+
+export type Techno = "Go" | "Rust" | "Node" | "Python" | "PHP"
+export const listOfTechnos: Techno[] = ["Go", "Rust", "Node", "Python", "PHP"]
+
+function sleep(time: number, callback: () => void) {
+	return new Promise(resolve => setTimeout(resolve, time)).then(callback)
+}
+const data = {message: "", secret: ""}
+
+const Results = lazy(() => import("./results"))
+export function CypherService() {
+	const [currentTech, setCurrentTech] = useState<Techno>(listOfTechnos?.at(-1)!)
+	const [showResult, setShowResult] = useState(false)
+	const [result, setResult] = useState<string | null>(null)
+	const [userData, setuserData] = useState<typeof data | null>(null)
+
+	useEffect(() => {
+		console.log(userData)
+	}, [userData])
+
+	function onRunCypher() {
+		console.log("onRunCypher has been called")
+		setShowResult(true)
+
+        if (!userData) throw Error("Fill the data first")
+
+		sleep(1500, () => {
+			let response: string
+			switch (currentTech) {
+				case "Go":
+					break
+				case "Rust":
+					break
+				case "Node":
+					break
+				case "Python":
+					break
+				case "PHP":
+					break
+			}
+		})
+
+		fetch("http://localhost:4444/cypher", {
+			method: "POST",
+			body: {
+				message: userData.message!,
+				secret: userData.secret!,
+			},
+		})
+			.then(resp => {
+				let json = resp.json()
+				return json
+			})
+			.then(data => {
+				console.log(data.data)
+				setResult(data.data)
+			})
+		console.log("Fetching completed")
+	}
+
+	function onReset() {
+		setResult(null)
+		setShowResult(false)
+	}
+	return (
+		<>
+			<Section>
+				<h2>Available Technologies</h2>
+				<p>Select the technology you wanna use to encrypt your data</p>
+				<fieldset className={"flex flex-row gap-4 items-center"}>
+					{listOfTechnos.map((tech: Techno) => {
+						return (
+							<div
+								className={"space-x-1"}
+								key={tech}>
+								<label htmlFor={tech}>{tech}</label>
+								<input
+									className={"accent-lime-500"}
+									onChange={() => setCurrentTech(tech)}
+									tabIndex={0}
+									type="radio"
+									name={tech}
+									id={tech}
+									checked={tech === currentTech}
+								/>
+							</div>
+						)
+					})}
+				</fieldset>
+			</Section>
+
+			<Section>
+				<h2 className={"my-2"}>
+					Techno : <span className={"text-lime-500 font-bold"}>{currentTech}</span>
+				</h2>
+				<fieldset className={"flex flex-col gap-4"}>
+					<div className={"flex flex-col gap-1"}>
+						<label
+							className={"text-sm font-mono"}
+							htmlFor="message">
+							Message to encrypt
+						</label>
+						<input
+							className={
+								"p-2 border border-lime-800 rounded-sm px-2 py-1 text-white bg-transparent"
+							}
+							type="text"
+							name="message"
+							id="message"
+							onChange={e =>
+								setuserData(prev => ({
+									secret: prev?.secret || "",
+									message: e.target?.value,
+								}))
+							}
+						/>
+					</div>
+					<div className={"flex flex-col gap-1"}>
+						<label
+							className={"text-sm font-mono"}
+							htmlFor="secret">
+							Secret Key
+						</label>
+						<input
+							className={
+								"p-2 border border-lime-800 rounded-sm px-2 py-1 text-white bg-transparent"
+							}
+							type="password"
+							name="secret"
+							id="secret"
+							onChange={e =>
+								setuserData(prev => ({
+									message: prev?.message || "",
+									secret: e.target?.value,
+								}))
+							}
+						/>
+					</div>
+					<div className="flex flex-row gap-8">
+						<button
+							onClick={onRunCypher}
+							className={
+								"font-mono text-lime-500 border border-lime-600 rounded-md px-3 py-1 opacity-50 hover:opacity-100 transition-all ease duration-120"
+							}>
+							Run Cypher
+						</button>
+						{showResult && (
+							<button
+								onClick={onReset}
+								className={
+									"font-mono text-orange-500 border border-orange-600 rounded-md px-3 py-1 opacity-50 hover:opacity-100 transition-all ease duration-120"
+								}>
+								Reset
+							</button>
+						)}
+					</div>
+				</fieldset>
+			</Section>
+
+			{showResult && (
+				<Suspense
+					fallback={
+						<Section>
+							<p>Fetching...</p>
+						</Section>
+					}>
+					<Results result={result} />
+				</Suspense>
+			)}
+		</>
+	)
+}
