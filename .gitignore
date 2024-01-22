@@ -1,42 +1,82 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.DS_Store
+.env
+/.idea
+/.vscode
+
+# ////////// frontend ///////////
+
+# misc
+/frontend/.DS_Store
+/frontend.pem
+/frontend/.idea
+/frontend/.vscode
+
 # dependencies
-*/node_modules
-*/.pnp
-*/.pnp.js
-*/.yarn/install-state.gz
+/frontend/node_modules
+/frontend/.pnp
+/frontend/.pnp.js
+/frontend/.yarn/install-state.gz
 
 # testing
-*/coverage
+/frontend/coverage
 
 # next.js
 /frontend/.next/
-*/out/
+/frontend/out/
 
 # production
-*/build
-*/target
-
-# misc
-*/.DS_Store
-*.pem
+/frontend/build
 
 # debug
-*/npm-debug.log*
-*/yarn-debug.log*
-*/yarn-error.log*
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
 
 # local env files
-*/.env*.local
-*/.env
+/frontend/.env*.local
+/frontend/.env
 
 # vercel
 /frontend/.vercel
 
 # typescript
-*.tsbuildinfo
-*/next-env.d.ts
+/frontend.tsbuildinfo
+/frontend/next-env.d.ts
 
+# ////////// BACKEND ///////////
 
+# misc
+/backend/.DS_Store
+/backend.pem
+/backend/.idea
+/backend/.vscode
 
+# dependencies
+/back-end/node_modules
+/back-end/.pnp
+/back-end/.pnp.js
+/back-end/.yarn/install-state.gz
+
+# testing
+/back-end/coverage
+
+# production
+/back-end/build
+/back-end/dist
+/back-end/target
+
+# debug
+/back-end/npm-debug.log*
+/back-end/yarn-debug.log*
+/back-end/yarn-error.log*
+
+# local env files
+/back-end/.env*.local
+/back-end/.env
+
+# typescript
+/back-end.tsbuildinfo
+/back-end/next-env.d.ts
 
